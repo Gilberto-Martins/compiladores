@@ -5,7 +5,9 @@
     <li>Download do MinGW-w64 based</li>
     <li>Download do Vscode</li>
     <li>Extensões: 
-        <li>C/C++ da Microsoft</li>
-        <li>C/C++ Compile Run</li>
+        <ul>
+            <li>C/C++ da Microsoft</li>
+            <li>C/C++ Compile Run</li>
+        </ul>
     </li>
 </ul>
