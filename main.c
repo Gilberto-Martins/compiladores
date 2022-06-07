@@ -2,25 +2,23 @@
 #include<ctype.h>
 #include<string.h>
  
-// Functions to calculate Follow
+ 
+//funcção de calculo do follow
 void followfirst(char, int, int);
 void follow(char c);
  
-// Function to calculate First
+ 
+//funcção de calculo do first
 void findfirst(char, int, int);
  
 int count, n = 0;
  
-// Stores the final result
-// of the First Sets
+//armazenando resultados finais
 char calc_first[10][100];
- 
-// Stores the final result
-// of the Follow Sets
 char calc_follow[10][100];
 int m = 0;
  
-// Stores the production rules
+//regras de produção
 char production[10][10];
 char f[10], first[10];
 int k;
@@ -33,23 +31,23 @@ int main(int argc, char **argv)
     int km = 0;
     int i, choice;
     char c, ch;
-    count = 8;
+    count = 8; // quantidade de gramaticas(produções)
      
-    // The Input grammar
-    strcpy(production[0], "E=TR");
-    strcpy(production[1], "R=+TR");
-    strcpy(production[2], "R=#");
-    strcpy(production[3], "T=FY");
-    strcpy(production[4], "Y=*FY");
-    strcpy(production[5], "Y=#");
+    //gramatica
+    strcpy(production[0], "E=TB");
+    strcpy(production[1], "B=+TB");
+    strcpy(production[2], "B=#");
+    strcpy(production[3], "T=FA");
+    strcpy(production[4], "A=*FA");
+    strcpy(production[5], "A=#");
     strcpy(production[6], "F=(E)");
-    strcpy(production[7], "F=i");
-     
+    strcpy(production[7], "F=x");
+
     int kay;
     char done[count];
     int ptr = -1;
      
-    // Initializing the calc_first array
+    // iniciando calculo do first
     for(k = 0; k < count; k++) {
         for(kay = 0; kay < 100; kay++) {
             calc_first[k][kay] = '!';
@@ -63,8 +61,7 @@ int main(int argc, char **argv)
         point2 = 0;
         xxx = 0;
          
-        // Checking if First of c has
-        // already been calculated
+        //vamos verificar se o c ja foi calculado
         for(kay = 0; kay <= ptr; kay++)
             if(c == done[kay])
                 xxx = 1;
@@ -72,16 +69,16 @@ int main(int argc, char **argv)
         if (xxx == 1)
             continue;
          
-        // Function call   
+        //chamando função do first  
         findfirst(c, 0, 0);
         ptr += 1;
          
-        // Adding c to the calculated list
+        //adicionando calculo do c a lista do first
         done[ptr] = c;
         printf("\n First(%c) = { ", c);
         calc_first[point1][point2++] = c;
          
-        // Printing the First Sets of the grammar
+        //printando first
         for(i = 0 + jm; i < n; i++) {
             int lark = 0, chk = 0;
              
@@ -104,11 +101,11 @@ int main(int argc, char **argv)
         point1++;
     }
     printf("\n");
-    printf("-----------------------------------------------\n\n");
+    printf("Vamos Para o Follow agora: \n\n");
     char donee[count];
     ptr = -1;
      
-    // Initializing the calc_follow array
+    //iniciando o calculo do follow
     for(k = 0; k < count; k++) {
         for(kay = 0; kay < 100; kay++) {
             calc_follow[k][kay] = '!';
@@ -122,8 +119,7 @@ int main(int argc, char **argv)
         point2 = 0;
         xxx = 0;
          
-        // Checking if Follow of ck
-        // has already been calculated
+        // verificando o follow pelo ck
         for(kay = 0; kay <= ptr; kay++)
             if(ck == donee[kay])
                 xxx = 1;
@@ -132,16 +128,15 @@ int main(int argc, char **argv)
             continue;
         land += 1;
          
-        // Function call
         follow(ck);
         ptr += 1;
          
-        // Adding ck to the calculated list
+        // adicionando o ck a lista do calculo do follow
         donee[ptr] = ck;
         printf(" Follow(%c) = { ", ck);
         calc_follow[point1][point2++] = ck;
          
-        // Printing the Follow Sets of the grammar
+        // printando gramatica do follow
         for(i = 0 + km; i < m; i++) {
             int lark = 0, chk = 0;
             for(lark = 0; lark < point2; lark++)
@@ -162,14 +157,14 @@ int main(int argc, char **argv)
         km = m;
         point1++;
     }
+    
 }
  
 void follow(char c)
 {
     int i, j;
      
-    // Adding "$" to the follow
-    // set of the start symbol
+    // adicionando o $ ao follow na primeira gramatica
     if(production[0][0] == c) {
         f[m++] = '$';
     }
@@ -181,15 +176,12 @@ void follow(char c)
             {
                 if(production[i][j+1] != '\0')
                 {
-                    // Calculate the first of the next
-                    // Non-Terminal in the production
+                    // calculando o primeiro first
                     followfirst(production[i][j+1], i, (j+2));
                 }
                  
                 if(production[i][j+1]=='\0' && c!=production[i][0])
                 {
-                    // Calculate the follow of the Non-Terminal
-                    // in the L.H.S. of the production
                     follow(production[i][0]);
                 }
             }
@@ -201,8 +193,7 @@ void findfirst(char c, int q1, int q2)
 {
     int j;
      
-    // The case where we
-    // encounter a Terminal
+    // verifiando caso encontre um Terminal
     if(!(isupper(c))) {
         first[n++] = c;
     }
@@ -217,8 +208,7 @@ void findfirst(char c, int q1, int q2)
                 else if(production[q1][q2] != '\0'
                           && (q1 != 0 || q2 != 0))
                 {
-                    // Recursion to calculate First of New
-                    // Non-Terminal we encounter after epsilon
+                    //calculando caso não encontre um Terminal
                     findfirst(production[q1][q2], q1, (q2+1));
                 }
                 else
@@ -230,9 +220,7 @@ void findfirst(char c, int q1, int q2)
             }
             else
             {
-                // Recursion to calculate First of
-                // New Non-Terminal we encounter
-                // at the beginning
+                // novo não Terminal
                 findfirst(production[j][2], j, 3);
             }
         }
@@ -243,8 +231,7 @@ void followfirst(char c, int c1, int c2)
 {
     int k;
      
-    // The case where we encounter
-    // a Terminal
+    // verifiando caso encontre um Terminal
     if(!(isupper(c)))
         f[m++] = c;
     else
@@ -256,9 +243,7 @@ void followfirst(char c, int c1, int c2)
                 break;
         }
          
-        //Including the First set of the
-        // Non-Terminal in the Follow of
-        // the original query
+        //primeiro conjunto não terminal
         while(calc_first[i][j] != '!')
         {
             if(calc_first[i][j] != '#')
@@ -269,14 +254,12 @@ void followfirst(char c, int c1, int c2)
             {
                 if(production[c1][c2] == '\0')
                 {
-                    // Case where we reach the
-                    // end of a production
+                    // fim de uma produção
                     follow(production[c1][0]);
                 }
                 else
                 {
-                    // Recursion to the next symbol
-                    // in case we encounter a "#"
+                    // caso encontre o "#" que é nosso vazio vai fazer uma recusção para o proximo simbolo
                     followfirst(production[c1][c2], c1, c2+1);
                 }
             }
