@@ -18,7 +18,7 @@ char calc_first[10][100];
 char calc_follow[10][100];
 int m = 0;
  
-//regras de produção
+//produção
 char production[10][10];
 char f[10], first[10];
 int k;
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
         point1++;
     }
     printf("\n");
-    printf("Vamos Para o Follow agora: \n\n");
+    printf("Follow\n\n");
     char donee[count];
     ptr = -1;
      
@@ -160,6 +160,8 @@ int main(int argc, char **argv)
     
 }
  
+
+ 
 void follow(char c)
 {
     int i, j;
@@ -188,6 +190,8 @@ void follow(char c)
         }
     }
 }
+
+
  
 void findfirst(char c, int q1, int q2)
 {
